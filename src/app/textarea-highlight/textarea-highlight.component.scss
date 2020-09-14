@@ -1,0 +1,19 @@
+.textarea-highlight-element {
+  overflow: hidden !important;
+  white-space: pre-wrap;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: white;
+  color: rgba(0, 0, 0, 0);
+  z-index: 1;
+}
+
+.textarea-highlight-tag {
+  border-radius: 4px;
+  padding: 1px 2px;
+  margin: -1px -2px;
+  overflow-wrap: break-word;
+}

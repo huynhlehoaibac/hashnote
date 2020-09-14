@@ -1,0 +1,28 @@
+<clr-main-container>
+  <clr-header>
+    <div class="branding">
+      <a routerlink="/" class="logo-and-title" href="/"
+        ><clr-icon shape="vm-bug"></clr-icon
+        ><span class="title">#hash-note</span></a
+      >
+    </div>
+    <div class="header-nav" [clr-nav-level]="1"></div>
+  </clr-header>
+  <div class="content-container">
+    <main class="content-area">
+      <router-outlet></router-outlet>
+    </main>
+    <clr-vertical-nav [clr-nav-level]="2">
+      <a clrVerticalNavLink routerLink="./list" routerLinkActive="active"
+        >List</a
+      >
+      <a clrVerticalNavLink routerLink="./create" routerLinkActive="active"
+        >Create</a
+      >
+      <div class="nav-divider"></div>
+      <a clrVerticalNavLink routerLink="./credit" routerLinkActive="active"
+        >Credit</a
+      >
+    </clr-vertical-nav>
+  </div>
+</clr-main-container>

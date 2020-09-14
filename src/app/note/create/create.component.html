@@ -1,0 +1,31 @@
+<form clrForm clrLayout="vertical" [formGroup]="form">
+  <div class="clr-form-control" style="margin-top: 0">
+    <label for="content" class="clr-control-label">Note every thing</label>
+    <div class="clr-control-container clr-error">
+      <div paTextareaHighlightContainer class="clr-textarea-wrapper">
+        <textarea
+          paTextareaElement
+          #textarea
+          formControlName="content"
+          id="content"
+          placeholder="Enter value here"
+          class="clr-textarea"
+        ></textarea>
+        <pa-textarea-highlight
+          [textareaElement]="textarea"
+          [textareaValue]="textarea.value"
+        ></pa-textarea-highlight>
+        <clr-icon
+          class="clr-validate-icon"
+          shape="exclamation-circle"
+        ></clr-icon>
+      </div>
+      <span class="clr-subtext">Error message</span>
+    </div>
+  </div>
+  <button class="btn btn-primary" type="submit" (click)="(false)">Save</button>
+  <button class="btn" type="button" (click)="(false)">Reset</button>
+</form>
+<button [routerLink]="['../list']" class="btn btn-primary">
+  Back to note list
+</button>
