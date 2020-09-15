@@ -1,19 +1,29 @@
 .textarea-highlight-element {
-  overflow: hidden !important;
+  overflow: hidden;
   white-space: pre-wrap;
   position: absolute;
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
-  background: white;
+  // background: white;
   color: rgba(0, 0, 0, 0);
   z-index: 1;
 }
 
 .textarea-highlight-tag {
   border-radius: 4px;
-  padding: 1px 2px;
-  margin: -1px -2px;
+  // padding: 0 2px 0 2px;
+  // margin: 0 -1px 0 -1px;
   overflow-wrap: break-word;
+  background-color: #51e2f5;
+
+  &.bg-pink {
+    background-color: #ffa8b6;
+  }
+}
+
+pre {
+  margin: 0;
+  border: 0;
 }

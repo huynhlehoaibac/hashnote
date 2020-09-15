@@ -1,9 +1,15 @@
 import {
+  ChangeDetectorRef,
   Component,
+  ElementRef,
   Input,
   OnChanges,
+  OnDestroy,
+  Renderer2,
   SimpleChanges,
-  ChangeDetectorRef,
+  ViewChild,
+  ViewEncapsulation,
+  HostListener,
 } from '@angular/core';
 
 const styleProperties = Object.freeze([
@@ -51,8 +57,9 @@ const styleProperties = Object.freeze([
   selector: 'pa-textarea-highlight',
   templateUrl: './textarea-highlight.component.html',
   styleUrls: ['./textarea-highlight.component.scss'],
+  encapsulation: ViewEncapsulation.None,
 })
-export class TextareaHighlightComponent implements OnChanges {
+export class TextareaHighlightComponent implements OnChanges, OnDestroy {
   /**
    * The textarea to highlight
    */
@@ -64,20 +71,60 @@ export class TextareaHighlightComponent implements OnChanges {
 
   highlightedText: string;
 
-  constructor(private cd: ChangeDetectorRef) {}
+  @ViewChild('highlightElement') private highlightElement: ElementRef;
+
+  private textareaEventListeners: Array<() => void> = [];
+
+  private highlightTagElements: Array<{
+    element: HTMLElement;
+    clientRect: ClientRect;
+  }>;
+
+  private isDestroyed = false;
+
+  constructor(private renderer: Renderer2, private cd: ChangeDetectorRef) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.textareaElement) {
       this.textAreaElementChanged();
     }
 
-    if (changes.tags || changes.tagCssClass || changes.textareaValue) {
-      this.addTags();
+    if (changes.textareaValue) {
+      this.decorateTags();
     }
+  }
+
+  ngOnDestroy(): void {
+    this.isDestroyed = true;
+    this.textareaEventListeners.forEach((unregister) => unregister());
+  }
+
+  @HostListener('window:resize')
+  onWindowResize() {
+    this.refresh();
   }
 
   private textAreaElementChanged() {
     this.refresh();
+
+    setTimeout(() => {
+      this.textareaEventListeners.forEach((unregister) => unregister());
+      this.textareaEventListeners = [
+        this.renderer.listen(this.textareaElement, 'input', () => {
+          this.decorateTags();
+        }),
+        this.renderer.listen(this.textareaElement, 'scroll', () => {
+          this.highlightElement.nativeElement.scrollTop = this.textareaElement.scrollTop - 24;
+          this.highlightTagElements = this.highlightTagElements.map((tag) => {
+            tag.clientRect = tag.element.getBoundingClientRect();
+            return tag;
+          });
+        }),
+        this.renderer.listen(this.textareaElement, 'mouseup', () => {
+          this.refresh();
+        }),
+      ];
+    });
   }
 
   private refresh() {
@@ -87,12 +134,26 @@ export class TextareaHighlightComponent implements OnChanges {
     });
   }
 
-  private addTags() {
+  private decorateTags() {
     const textareaValue =
       typeof this.textareaValue !== 'undefined'
         ? this.textareaValue
         : this.textareaElement.value;
 
+    let highlightedText = textareaValue;
 
+    const matchMentions = /(@[\S]+)\b/g;
+    highlightedText = highlightedText.replace(
+      matchMentions,
+      `<span class='textarea-highlight-tag bg-pink'>$1</span>`
+    );
+
+    const matchHashtags = /(#[\S]+)\b/g;
+    highlightedText = highlightedText.replace(
+      matchHashtags,
+      `<span class='textarea-highlight-tag'>$1</span>`
+    );
+
+    this.highlightedText = highlightedText;
   }
 }
