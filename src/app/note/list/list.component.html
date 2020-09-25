@@ -1,3 +1,14 @@
-list works!
-<p></p>
 <button [routerLink]="['../create']" class="btn btn-primary">New note</button>
+<clr-datagrid>
+  <clr-dg-column [clrDgField]="'content'">Content</clr-dg-column>
+  <clr-dg-column [clrDgField]="'hashTags'">Hash Tags</clr-dg-column>
+  <clr-dg-column [clrDgField]="'mentions'">Mentions</clr-dg-column>
+
+  <clr-dg-row *clrDgItems="let note of notes$ | async" (click)="onClick(note.id)">
+    <clr-dg-cell>{{ note.content }}</clr-dg-cell>
+    <clr-dg-cell>{{ note.hashTags }}</clr-dg-cell>
+    <clr-dg-cell>{{ note.mentions }}</clr-dg-cell>
+  </clr-dg-row>
+
+  <!-- <clr-dg-footer>{{notes$.length}} users</clr-dg-footer> -->
+</clr-datagrid>

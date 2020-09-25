@@ -110,7 +110,7 @@ export class TextareaHighlightComponent implements OnChanges, OnDestroy {
     setTimeout(() => {
       this.textareaEventListeners.forEach((unregister) => unregister());
       this.textareaEventListeners = [
-        this.renderer.listen(this.textareaElement, 'input', () => {
+        this.renderer.listen(this.textareaElement, 'input', (value) => {
           this.decorateTags();
         }),
         this.renderer.listen(this.textareaElement, 'scroll', () => {

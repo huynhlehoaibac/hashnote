@@ -14,6 +14,7 @@
         ></textarea>
         <pa-textarea-highlight
           [textareaElement]="textarea"
+          [textareaValue]="content"
         ></pa-textarea-highlight>
         <clr-icon
           class="clr-validate-icon"
@@ -23,7 +24,7 @@
       <span class="clr-subtext">Error message</span>
     </div>
   </div>
-  <button class="btn btn-primary" type="submit" (click)="onCreate()">Save</button>
+  <button class="btn btn-primary" type="submit" (click)="onEdit()">Save</button>
   <button class="btn" type="button" (click)="(false)">Reset</button>
 </form>
 <button [routerLink]="['../list']" class="btn btn-primary">

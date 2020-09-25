@@ -17,4 +17,8 @@ export class CreateComponent implements OnInit {
   }
 
   ngOnInit(): void {}
+
+  onCreate(): void {
+    const data = this.form.value;
+  }
 }
